@@ -5,10 +5,19 @@ import { leadFormSchema, MIN_SUBMIT_MS, normalizePhone } from "@/lib/validation"
 
 export const dynamic = "force-dynamic";
 
+/** This microsite only. Never accept site_source from the client. */
+const TOWNS_SITE_SOURCE: "towns" = SITE_SOURCE;
+
+function withoutClientSource(body: unknown): unknown {
+  if (!body || typeof body !== "object" || Array.isArray(body)) return body;
+  const { site_source: _ignored, ...rest } = body as Record<string, unknown>;
+  return rest;
+}
+
 export async function POST(request: Request) {
   let body: unknown;
   try {
-    body = await request.json();
+    body = withoutClientSource(await request.json());
   } catch {
     return NextResponse.json({ ok: false, error: "Invalid request body." }, { status: 400 });
   }
@@ -46,7 +55,7 @@ export async function POST(request: Request) {
   try {
     const supabase = getSupabaseAnon();
     const { error } = await supabase.from(LEADS_TABLE).insert({
-      site_source: SITE_SOURCE,
+      site_source: TOWNS_SITE_SOURCE,
       first_name: data.first_name,
       last_name: data.last_name,
       email: data.email,
