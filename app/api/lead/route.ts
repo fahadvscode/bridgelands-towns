@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { SITE_SOURCE } from "@/lib/content";
+import { SITE_SOURCE, SITE_URL } from "@/lib/content";
 import { getSupabaseAnon, LEADS_TABLE } from "@/lib/supabase";
 import { leadFormSchema, MIN_SUBMIT_MS, normalizePhone } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
-/** This microsite only. Never accept site_source from the client. */
-const TOWNS_SITE_SOURCE: "towns" = SITE_SOURCE;
+/** Hardcoded to this site's URL. Never accept site_source from the client. */
+const THIS_SITE_SOURCE: typeof SITE_URL = SITE_SOURCE;
 
 function withoutClientSource(body: unknown): unknown {
   if (!body || typeof body !== "object" || Array.isArray(body)) return body;
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
   try {
     const supabase = getSupabaseAnon();
     const { error } = await supabase.from(LEADS_TABLE).insert({
-      site_source: TOWNS_SITE_SOURCE,
+      site_source: THIS_SITE_SOURCE,
       first_name: data.first_name,
       last_name: data.last_name,
       email: data.email,
