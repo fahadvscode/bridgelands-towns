@@ -43,6 +43,7 @@ export function siteOrganizationSchema() {
     "@id": `${SITE_URL}/#organization`,
     name: SITE_ORG_NAME,
     url: `${SITE_URL}/`,
+    logo: `${SITE_URL}/favicon-96x96.png`,
     description:
       "An independent information resource focused on the potential townhome collection at Bridgelands, not affiliated with or endorsed by Arista Homes, Deco Homes, or Opus Homes.",
   };

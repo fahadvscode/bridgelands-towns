@@ -1,10 +1,9 @@
 import { ImageResponse } from "next/og";
 
-/** Google Search requires a square favicon that is a multiple of 48px. */
-export const size = { width: 48, height: 48 };
+export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-export default function Icon() {
+export default function AppleIcon() {
   return new ImageResponse(
     (
       <div
@@ -16,7 +15,7 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 28,
+          fontSize: 108,
           fontWeight: 700,
           fontFamily: "ui-serif, Georgia, serif",
         }}
